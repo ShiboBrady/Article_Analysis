@@ -18,23 +18,27 @@ void initArt(article *art, char *name)
 
 void readArticleToArray(article *art)
 {
-	char *line;
+	char *line_temp, *line;
+	int len;
 	FILE *fp;
 	if (!(fp = fopen(art->articleName, "rb"))){
 		perror("Open file error : ");
 		exit(1);
 	}
 	while (!feof(fp)){
-		line = (char*)calloc(1, LINE_MAX_LENGTH * sizeof(char));
-		fgets(line, LINE_MAX_LENGTH, fp);
+		line_temp = (char*)calloc(1, LINE_MAX_LENGTH * sizeof(char));
+		fgets(line_temp, LINE_MAX_LENGTH, fp);
+		line = (char*)calloc(1, (strlen(line_temp) + 1) * sizeof(char));
+		strcpy(line, line_temp);
 		art->all_lines_original[art->length++] = line;
+		free(line_temp);
 	}
 	fclose(fp);
 }
 
 void charProcess(article *art)
 {
-	char ch, *line;
+	char ch, *line, *line_temp;
 	int i = 0;
 	FILE *fp_read, *fp_write;
 	fp_read = fopen(art->articleName, "rb");
@@ -56,9 +60,12 @@ void charProcess(article *art)
 	fclose(fp_write);
 	fp_read = fopen("temp.txt", "rb");
 	while (!feof(fp_read)){
-		line = (char*)calloc(1, LINE_MAX_LENGTH * sizeof(char));
-		fgets(line, LINE_MAX_LENGTH, fp_read);
+		line_temp = (char*)calloc(1, LINE_MAX_LENGTH * sizeof(char));
+		fgets(line_temp, LINE_MAX_LENGTH, fp_read);
+		line = (char*)calloc(1, (strlen(line_temp) + 1) * sizeof(char));
+		strcpy(line, line_temp);
 		art->all_lines[i++] = line;
+		free(line_temp):
 	}
 	fclose(fp_read);
 }
