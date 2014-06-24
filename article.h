@@ -16,7 +16,7 @@
 #define WORD_MAX_NUM 1000000
 #define LINE_MAX_NUM 100000
 #define	WORD_MAX_LENGTH 20
-#define LINE_MAX_LENGTH 3000
+#define LINE_MAX_LENGTH 1000
 typedef struct Words
 {
 	char word[WORD_MAX_LENGTH];

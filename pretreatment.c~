@@ -26,9 +26,9 @@ void readArticleToArray(article *art)
 		exit(1);
 	}
 	while (!feof(fp)){
-		line_temp = (char*)malloc(LINE_MAX_LENGTH * sizeof(char));
+		line_temp = (char*)calloc(1, LINE_MAX_LENGTH * sizeof(char));
 		fgets(line_temp, LINE_MAX_LENGTH, fp);
-		line = (char*)malloc((strlen(line_temp) + 2) * sizeof(char));
+		line = (char*)calloc(1, (strlen(line_temp) + 1) * sizeof(char));
 		strcpy(line, line_temp);
 		art->all_lines_original[art->length++] = line;
 		free(line_temp);
@@ -60,9 +60,9 @@ void charProcess1(article *art)
 	fclose(fp_write);
 	fp_read = fopen("temp.txt", "rb");
 	while (!feof(fp_read)){
-		line_temp = (char*)malloc(LINE_MAX_LENGTH * sizeof(char));
+		line_temp = (char*)calloc(1, LINE_MAX_LENGTH * sizeof(char));
 		fgets(line_temp, LINE_MAX_LENGTH, fp_read);
-		line = (char*)malloc((strlen(line_temp) + 2) * sizeof(char));
+		line = (char*)calloc(1, (strlen(line_temp) + 1) * sizeof(char));
 		strcpy(line, line_temp);
 		art->all_lines[i++] = line;
 		free(line_temp);
@@ -76,12 +76,16 @@ void charProcess(article *art)
 	int i, j, len;
 	for (i = 0; i < art->length; ++i){
 		temp = art->all_lines_original[i];
-		len = strlen(temp);
-		line = (char*)malloc((len + 1) * sizeof(char));
+		len = strlen(temp) + 1;
+		line = (char*)calloc(1, len * sizeof(char));
 		art->all_lines[i] = line;
 		for (j = 0; j < len; ++j){
-			if (ispunct(temp[j]) || temp[j] == '\r' || temp[j] == '\n'){
+			if (ispunct(temp[j])){
 				line[j] = 32;
+			}
+			else if(temp[j] == '\r' || temp[j] == '\n'){
+				line[j] = 32;
+				--art->char_count;
 			}
 			else if (isupper(temp[j])){
 				line[j] = temp[j] + 32;
@@ -104,7 +108,7 @@ int insertWord(char *word, article *art)
 			return 0;
 		}
 	}
-	words *new_word = (words*)malloc(sizeof(words));
+	words *new_word = (words*)calloc(1, sizeof(words));
 	strcpy(new_word->word, word);
 	new_word->count = 1;
 	art->all_words[i] = new_word;
@@ -133,18 +137,12 @@ void wordCount(article *art)
 	for (i = 0; i < art->length; ++i){
 		pos = 0;
 		temp = art->all_lines[i];
-		while(*temp == 32){
-			++temp;
-		}
 		while (sscanf(temp + pos, "%s", word) == 1){
 			if (insertWord(word, art)){
 				art->uni_word++;
 			}
 			art->word_count++;
 			pos += strlen(word) + 1;
-			while(*(temp + pos) == 32){
-				++pos;
-			}
 		}
 	}
 }
