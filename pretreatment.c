@@ -13,6 +13,9 @@ void initArt(article *art, char *name)
 	art->word_count = 0;
 	art->uni_word = 0;
 	art->char_count = 0;
+    art->all_words = malloc(sizeof(words) * WORD_MAX_NUM);
+    art->all_lines_original = malloc(LINE_MAX_LENGTH * LINE_MAX_NUM);
+    art->all_lines = malloc(LINE_MAX_LENGTH * LINE_MAX_NUM);
 	strcpy(art->articleName, name);
 }
 

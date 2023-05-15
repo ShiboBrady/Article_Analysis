@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <string.h>
 
 
@@ -30,9 +31,9 @@ typedef struct Article
 	long char_count;
 	long length;
 	char articleName[300];
-	words *all_words[WORD_MAX_NUM];
-	char *all_lines_original[LINE_MAX_NUM];
-	char *all_lines[LINE_MAX_NUM];
+	words **all_words;
+	char **all_lines_original;
+	char **all_lines;
 }article;
 
 void run(article *art);

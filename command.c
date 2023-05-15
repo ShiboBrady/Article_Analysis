@@ -62,11 +62,13 @@ int command_format(char *str, char *param, int *val)
 	char para_w[3] = "-w";
 	char para_c[3] = "-c";
 	char *p = str, *q;
-	while (*p == 32){
-		++p;
+    //忽略开头的空格
+	while (*p == 32) {
+        ++p;
 	}
 	switch (*p){
 	case 'w':
+        //执行统计命令
 		if ((value = findSubstr(p, substr_wc)) != -1){
 			if ((value = findSubstr(p + 2, para_l)) != -1){
 				return 1;
@@ -80,8 +82,10 @@ int command_format(char *str, char *param, int *val)
 		}
 		break;
 	case 't':
+        //转成T
 		*p -= 32;
 	case 'T':
+        //执行Top N命令
 		if ((value = findSubstr(p, substr_top)) != -1){
 			if ((value = is_num(p + 4)) != -1){
 				*val = value;
@@ -90,6 +94,7 @@ int command_format(char *str, char *param, int *val)
 		}
 		break;
 	case 's':
+        //执行search word命令
 		if ((value = findSubstr(p, substr_search)) != -1){
 			p += 6;
 			while (*p == 32 && *p != 0){

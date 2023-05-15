@@ -11,7 +11,7 @@ void run(article *art)
 {
 	char cmd[100], param[100];
 	int k, value;
-	printf("Please input command : \n");
+	printf("Please input command: [eg: wc -l; Top 5; search xxx]\n");
 	while (fflush(stdin), gets(cmd) != NULL){
 		k = command_format(cmd, param, &value);
 		switch (k){
